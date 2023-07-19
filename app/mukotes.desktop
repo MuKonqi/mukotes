@@ -1,0 +1,11 @@
+#!/usr/bin/env xdg-open
+[Desktop Entry]
+Version=undefined
+Name=Mukotes
+Encoding=UTF-8
+Comment=Simple note editor.
+Path=/usr/local/bin/mukotes
+Exec=/usr/bin/mukotes
+Terminal=false
+Type=Application
+Categories=Office;Utily;
