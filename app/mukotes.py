@@ -26,6 +26,9 @@ username=getpass.getuser()
 en="/home/"+username+"/.by-mukonqi/mukotes/en.txt"
 tr="/home/"+username+"/.by-mukonqi/mukotes/tr.txt"
 
+global gfs
+gfs=0
+
 def settings():
     if not os.path.isfile("/home/"+username+"/.by-mukonqi/mukotes/dark.txt") and not os.path.isfile("/home/"+username+"/.by-mukonqi/mukotes/light.txt"):
         bg="#000000"
@@ -55,6 +58,8 @@ def settings():
         if os.path.isfile(tr):
             messagebox.showinfo("Bilgilendirme","Başarılı! Koyu tema uygulandı.")
         swindow.destroy()
+        if gfs == 0:
+            window.destroy()
         os.system("python3 /usr/bin/mukotes")
     def light():
         os.system("cd /home/"+username+"/.by-mukonqi/mukotes/ ; rm dark.txt ; touch light.txt")
@@ -63,16 +68,22 @@ def settings():
         if os.path.isfile(tr):
             messagebox.showinfo("Bilgilendirme","Başarılı! Açık tema uygulandı.")
         swindow.destroy()
+        if gfs == 0:
+            window.destroy()
         os.system("python3 /usr/bin/mukotes")
     def langen():
         os.system("cd /home/"+username+"/.by-mukonqi/mukotes/ ; rm tr.txt ; touch en.txt")
         messagebox.showinfo("Information","Successful! English language applied.")
         swindow.destroy()
+        if gfs == 0:
+            window.destroy()
         os.system("python3 /usr/bin/mukotes")
     def langtr():
         os.system("cd /home/"+username+"/.by-mukonqi/mukotes/ ; rm en.txt ; touch tr.txt")
         messagebox.showinfo("Bilgilendirme","Başarılı! Türkçe dili uygulandı.") 
         swindow.destroy()
+        if gfs == 0:
+            window.destroy()
         os.system("python3 /usr/bin/mukotes")
     swindow=Tk()
     swindow.config(background=bg)
@@ -112,6 +123,8 @@ def settings():
     exit()
     
 def first_start():
+    global gfs
+    gfs=1
     bg="#000000"
     fg="#FFFFFF"
     button_bg="#FFFFFF"
@@ -171,6 +184,7 @@ elif os.path.isfile("/home/"+username+"/.by-mukonqi/mukotes/light.txt"):
     a_button_bg="#FFFFFF"
     a_button_fg="#000000"
 else:
+    gfs=1
     if os.path.isfile(en):
         messagebox.showwarning("Warning","Can't found theme config. When you click 'OK' settings will open.")
     elif os.path.isfile(tr):
@@ -210,13 +224,13 @@ def file():
         if fs != 0 and nf2 != 0:
             if name.get() == "":
                 e()
-                file()
+                return
             os.system("cd /home/"+username+"/Notes ; rm "+name.get()+" ; touch "+name.get())
             output_file=open("/home/"+username+"/Notes/"+name.get(), "a")
         else:
             if fentry.get() == "":
                 e()
-                file()
+                return
             os.system("cd /home/"+username+"/Notes ; touch "+fentry.get())
             output_file=open("/home/"+username+"/Notes/"+fentry.get(), "a")
             if fs != 0:
@@ -229,7 +243,6 @@ def file():
         if fs == 0:
             os.system("python3 /usr/bin/mukotes")
             exit()
-            global text1
         else:
             text1.config(state=NORMAL)
             text1.delete(1.0, END)
@@ -237,7 +250,7 @@ def file():
             (out, err)=mynotes_update.communicate() 
             text1.insert(END, out)
             text1.insert(END, err)  
-            text1.config(state=DISABLED)     
+            text1.config(state=DISABLED)  
 
     fwindow=Tk()
     fwindow.config(background=bg)
@@ -277,9 +290,9 @@ def file():
             flabel1=Label(fwindow, background=bg, foreground=fg, font="arial 14 bold", text="Notunuzu düzenlemeye başlayabilirsiniz.")
     if os.path.isfile(en):
         if  nf == 0:
-            window.title("New Note - Notes | Mukotes")
+            fwindow.title("New Note - Notes | Mukotes")
         else:
-            window.title(name.get()+" - Notes | Mukotes")
+            fwindow.title(name.get()+" - Notes | Mukotes")
         fbutton1=Button(fwindow, cursor="hand2", activebackground=a_button_bg, activeforeground=a_button_fg, background=button_bg, foreground=button_fg, borderwidth="3", text="Save", command=save)    
     elif os.path.isfile(tr):
         if  nf == 0:
@@ -321,6 +334,7 @@ if os.path.isdir("/home/"+username+"/Notes"):
     space2=Label(window, background=bg, foreground=fg, text="\n", font="arial 3")
     space3=Label(window, background=bg, foreground=fg, text="\n", font="arial 3")
     space4=Label(window, background=bg, foreground=fg, text="\n", font="arial 7")
+    space5=Label(window, background=bg, foreground=fg, text="\n", font="arial 1")
     mynotes = subprocess.Popen("cd /home/"+username+"/Notes ; ls", shell=TRUE, stderr=subprocess.PIPE, stdout=subprocess.PIPE, stdin=subprocess.PIPE,universal_newlines=True)
     (out, err)=mynotes.communicate()
     scroll=Scrollbar(window)
@@ -355,6 +369,7 @@ if os.path.isdir("/home/"+username+"/Notes"):
     button2.pack()
     space4.pack()
     sobutton.pack()
+    space5.pack()
     mainloop()
 else:
     os.system("cd /home/"+username+"/ ; mkdir Notes")
