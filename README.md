@@ -3,4 +3,11 @@
 
 Simple note editor.
 
+# Features
+- Open existing note
+- Open a new note
+- Note editing
+- Note deletion
+- View notes in the corresponding folder
+
 ### Mukotes uses [Apiutaller](https://github.com/MuKonqi/apiutaller) as installer and uninstaller.
